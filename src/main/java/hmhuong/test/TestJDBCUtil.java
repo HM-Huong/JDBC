@@ -1,6 +1,7 @@
 package hmhuong.test;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -16,11 +17,10 @@ public class TestJDBCUtil {
 
 			/* Tạo ra đối tượng statement:
 				+ Statement: thực thi câu lệnh SQL không có tham số
-				+ PreparedStatement: thực thi câu lệnh SQL có tham số
+				+ PreparedStatement: thực thi câu lệnh SQL có tham số (nên sử dụng thay cho Statement vì Statement có thể bị lỗi SQL Injection)
 				+ CallableStatement: thực thi các câu lệnh SQL gọi các hàm, thủ tục trong CSDL
 			*/
 			Statement statement = connection.createStatement();
-
 			/* thực thi câu lệnh SQL
 					+ ResultSet executeQuery(String sql): thực thi câu lệnh SELECT
 					+ int executeUpdate(String sql): thực thi các câu lệnh INSERT, UPDATE, ... Trả về số dòng thay đổi
@@ -37,6 +37,16 @@ public class TestJDBCUtil {
 			} else {
 				System.out.println("Thêm thất bại");
 			}
+
+			// ----------- Chống SQL Injection -----------
+			String psSQL = "INSERT INTO people(last_name, first_name, gender, dob, income) VALUES(?, ?, ?, ?, ?);";
+			PreparedStatement preparedStatement = connection.prepareStatement(psSQL);
+			preparedStatement.setString(1, "3333");
+			preparedStatement.setString(2, "4444");
+			preparedStatement.setString(3, "M");
+			preparedStatement.setString(4, "2004-04-04");
+			preparedStatement.setDouble(5, 40000);
+			check = preparedStatement.executeUpdate();
 
 			// đóng kết nối
 			JDBCUtil.closeConnection(connection);
