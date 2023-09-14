@@ -1,8 +1,6 @@
 package hmhuong.dao;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -40,7 +38,8 @@ public class KhachHangDAO implements DAOInterface<KhachHang> {
 		try {
 			Statement statement = connection.createStatement();
 			String sql = "insert into khachHang(id, hoVaTen, diaChi, ngaySinh) "
-					+ "values(" + t.getId() + ", N'" + t.getHoVaTen() + "', '" + t.getDiaChi() + "', '" + sdf.format(t.getNgaySinh()) + "')";
+					+ "values(" + t.getId() + ", N'" + t.getHoVaTen() + "', '" + t.getDiaChi() + "', '"
+					+ sdf.format(t.getNgaySinh()) + "')";
 			System.out.println("Thực thi câu lệnh SQL: " + sql);
 			result = statement.executeUpdate(sql);
 			System.out.println("Có " + result + " bị thay đổi");
@@ -75,7 +74,8 @@ public class KhachHangDAO implements DAOInterface<KhachHang> {
 		Connection connection = JDBCUtil.getConnection();
 		try {
 			Statement statement = connection.createStatement();
-			String sql = "update khachHang set hoVaTen = N'" + t.getHoVaTen() + "', diaChi = '" + t.getDiaChi() + "', ngaySinh = '" + sdf.format(t.getNgaySinh()) + "' where id = " + t.getId();
+			String sql = "update khachHang set hoVaTen = N'" + t.getHoVaTen() + "', diaChi = '" + t.getDiaChi()
+					+ "', ngaySinh = '" + sdf.format(t.getNgaySinh()) + "' where id = " + t.getId();
 			System.out.println("Thực thi câu lệnh SQL: " + sql);
 			result = statement.executeUpdate(sql);
 			System.out.println("Có " + result + " bị thay đổi");

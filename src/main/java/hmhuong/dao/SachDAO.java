@@ -1,6 +1,7 @@
 package hmhuong.dao;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -37,9 +38,8 @@ public class SachDAO implements DAOInterface<Sach> {
 	@Override
 	public int insert(Sach t) {
 		int result = 0;
+		Connection connection = JDBCUtil.getConnection();
 		try {
-			Connection connection = JDBCUtil.getConnection();
-
 			Statement statement = connection.createStatement();
 			String sql = "insert into sach(id, tenSach, gia, namXuatBan) "
 					+ "values(" + t.getId() + ", N'" + t.getTenSach() + "', "
@@ -47,31 +47,87 @@ public class SachDAO implements DAOInterface<Sach> {
 			System.out.println("Thực thi câu lệnh SQL: " + sql);
 			result = statement.executeUpdate(sql);
 			System.out.println("Có " + result + " bị thay đổi");
-
-			JDBCUtil.closeConnection(connection);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
+		JDBCUtil.closeConnection(connection);
 		return result;
 	}
 
 	@Override
 	public ArrayList<Sach> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Sach> result = new ArrayList<Sach>();
+		Connection connection = JDBCUtil.getConnection();
+		try {
+			Statement statement = connection.createStatement();
+			String sql = "select * from sach";
+			System.out.println("Thực thi câu lệnh SQL: " + sql);
+			ResultSet rs = statement.executeQuery(sql);
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String tenSach = rs.getString("tenSach");
+				int gia = rs.getInt("gia");
+				int namXuatBan = rs.getInt("namXuatBan");
+				result.add(new Sach(id, tenSach, gia, namXuatBan));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		JDBCUtil.closeConnection(connection);
+		return result;
 	}
 
 	@Override
 	public ArrayList<Sach> selectByCondition(String condition) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Sach> result = new ArrayList<Sach>();
+		Connection connection = JDBCUtil.getConnection();
+		try {
+			Statement statement = connection.createStatement();
+			String sql = "select * from sach where " + condition;
+			System.out.println("Thực thi câu lệnh SQL: " + sql);
+			ResultSet rs = statement.executeQuery(sql);
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String tenSach = rs.getString("tenSach");
+				int gia = rs.getInt("gia");
+				int namXuatBan = rs.getInt("namXuatBan");
+				result.add(new Sach(id, tenSach, gia, namXuatBan));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		JDBCUtil.closeConnection(connection);
+		return result;
 	}
 
 	@Override
 	public Sach selectById(Sach t) {
-		// TODO Auto-generated method stub
-		return null;
+		Sach result = null;
+		Connection connection = JDBCUtil.getConnection();
+		try {
+			Statement statement = connection.createStatement();
+			String sql = "select * from sach where id = " + t.getId();
+			System.out.println("Thực thi câu lệnh SQL: " + sql);
+			ResultSet rs = statement.executeQuery(sql);
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String tenSach = rs.getString("tenSach");
+				int gia = rs.getInt("gia");
+				int namXuatBan = rs.getInt("namXuatBan");
+				result = new Sach(id, tenSach, gia, namXuatBan);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		JDBCUtil.closeConnection(connection);
+		return result;
 	}
 
 	@Override

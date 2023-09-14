@@ -18,6 +18,12 @@ public class Sach {
 	}
 
 
+	@Override
+	public String toString() {
+		return "Sach [id=" + id + ", tenSach=" + tenSach + ", giaBan=" + giaBan + ", namXuatBan=" + namXuatBan + "]";
+	}
+
+
 	public int getId() {
 		return id;
 	}
